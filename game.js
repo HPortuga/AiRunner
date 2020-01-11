@@ -4,6 +4,7 @@ var minWidth = 10;
 var maxWidth = 20;
 var minGap = 200;
 var maxGap = 500;
+var gap = randomGap();
 
 var myObstacles = [];
 
@@ -14,13 +15,23 @@ var gameArea = {
     this.canvas.width = 1200;
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     this.context = this.canvas.getContext("2d");
-    myObstacles.push(new obstacle());
+    this.frame = 0;
     this.interval = setInterval(this.updateGameArea, 5);
   },
   updateGameArea: function() {
     gameArea.clear()
-    myObstacles[0].x -= 1;
-    myObstacles[0].draw();
+
+    if (everyInterval(gap)) {
+      myObstacles.push(new obstacle());
+      gap = randomGap();
+      gameArea.frame = 0;
+    }
+
+    myObstacles.forEach((item) => {
+      item.x -= 1;
+      item.draw();
+    });
+    gameArea.frame += 1
   },
   clear: function() {
     gameArea.context.clearRect(0,0,this.canvas.width, this.canvas.height);
@@ -42,6 +53,15 @@ function obstacle() {
   this.draw = function() {
     gameArea.context.fillRect(this.x, this.y, this.width, this.height)
   };
+}
+
+function everyInterval(n) {
+  if (gameArea.frame % n === 0) return true;
+  return false;
+}
+
+function randomGap() {
+  return Math.floor(minGap + Math.random() * (maxGap - minGap + 1));
 }
 
 startGame();
