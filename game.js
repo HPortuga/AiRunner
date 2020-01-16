@@ -13,6 +13,7 @@ var player = {
   y: 470,
   speedY: 0,
   update: function() {
+    gameArea.context.fillStyle = "black";
     gameArea.context.fillRect(this.x, this.y, 30, 30);
   },
   newPos: function() {
@@ -31,6 +32,16 @@ var player = {
   }
 };
 
+var scoreText = {
+  x: 900,
+  y: 50,
+  update: function(text) {
+    gameArea.context.fillStyle = "gray";
+    gameArea.context.font = "30px Consolas";
+    gameArea.context.fillText(text, this.x, this.y);
+  }
+};
+
 var gameArea = {
   canvas: document.createElement("canvas"),
   start: function() {
@@ -39,6 +50,8 @@ var gameArea = {
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     this.context = this.canvas.getContext("2d");
     this.frame = 0;
+    this.score = 0;
+    scoreText.update("Score: " + Math.floor(this.score));
     this.interval = setInterval(this.updateGameArea, 5);
     window.addEventListener("keydown", jump);
   },
@@ -63,7 +76,9 @@ var gameArea = {
     });
     player.newPos();
     player.update();
-    gameArea.frame += 1
+    gameArea.frame += 1;
+    gameArea.score += 0.01;
+    scoreText.update("Score: " + Math.floor(gameArea.score));
   },
   clear: function() {
     gameArea.context.clearRect(0,0,this.canvas.width, this.canvas.height);
@@ -83,6 +98,7 @@ function obstacle() {
   this.x = 1200;
   this.y = gameArea.canvas.height - this.height;
   this.draw = function() {
+    gameArea.context.fillStyle = "black";
     gameArea.context.fillRect(this.x, this.y, this.width, this.height)
   };
 }
