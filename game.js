@@ -23,6 +23,11 @@ var player = {
 
     if (this.speedY === 2 && this.y === 470)
       this.speedY = 0;
+  },
+  crashWith: function(obs) {
+    if (this.x + 30 > obs.x && this.x < obs.x + obs.width && this.y + 30 > obs.y)
+      return true;
+    return false;
   }
 };
 
@@ -38,7 +43,13 @@ var gameArea = {
     window.addEventListener("keydown", jump);
   },
   updateGameArea: function() {
-    gameArea.clear()
+    myObstacles.forEach((item) => {
+      if (player.crashWith(item))
+        gameArea.stop();
+        return;
+    });
+
+    gameArea.clear();
 
     if (everyInterval(gap)) {
       myObstacles.push(new obstacle());
@@ -58,7 +69,7 @@ var gameArea = {
     gameArea.context.clearRect(0,0,this.canvas.width, this.canvas.height);
   },
   stop: function() {
-    player.newPos();
+    clearInterval(this.interval);
   }
 };
 
