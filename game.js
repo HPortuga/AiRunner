@@ -56,10 +56,15 @@ var gameArea = {
     window.addEventListener("keydown", jump);
   },
   updateGameArea: function() {
-    myObstacles.forEach((item) => {
-      if (player.crashWith(item))
+    myObstacles.forEach((item, index) => {
+      if (player.crashWith(item)) {
         gameArea.stop();
         return;
+      }
+
+      if (item.x < -player.x) {
+        myObstacles.splice(index, 1);
+      }
     });
 
     gameArea.clear();
