@@ -71,7 +71,6 @@ var gameArea = {
         myObstacles.splice(index, 1);
     });
 
-
     gameArea.clear();
 
     if (everyInterval(gap)) {
@@ -91,13 +90,15 @@ var gameArea = {
     gameArea.score += 0.01;
     scoreText.update("Score: " + Math.floor(gameArea.score));
 
-    player.distances.bottom = myObstacles[0].x - (player.x + player.size);
-    if (player.distances.bottom < 0) {
-      player.distances.bottom = myObstacles[1].x - (player.x + player.size);
-    }
+    player.distances.bottom = Math.floor(Math.sqrt(Math.pow(myObstacles[0].x - player.x + player.size,2)));
+    player.distances.top = Math.floor(Math.sqrt(Math.pow(myObstacles[0].x - player.x + player.size,2) + Math.pow(myObstacles[0].y - 500,2)));
 
-    var span = document.getElementById("log");
-    span.innerText = player.distances.bottom;
+    //drawSensors();
+
+    var spanDis = document.getElementById("logDis");
+    spanDis.innerText = player.distances.bottom;
+    var spanAlt = document.getElementById("logAlt");
+    spanAlt.innerText = player.distances.top;
 
   },
   clear: function() {
@@ -134,6 +135,20 @@ function randomGap() {
 
 function jump() {
   player.speedY = -2;
+}
+
+function drawSensors() {
+  gameArea.context.beginPath();
+  gameArea.context.moveTo(player.x + player.size, player.y + player.size);
+  gameArea.context.lineTo(myObstacles[0].x, 500);
+  gameArea.context.stroke();
+  gameArea.context.closePath();
+
+  gameArea.context.beginPath();
+  gameArea.context.moveTo(player.x + player.size, player.y + player.size);
+  gameArea.context.lineTo(myObstacles[0].x, myObstacles[0].y);
+  gameArea.context.stroke();
+  gameArea.context.closePath();
 }
 
 startGame();
