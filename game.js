@@ -90,8 +90,8 @@ var gameArea = {
     gameArea.score += 0.01;
     scoreText.update("Score: " + Math.floor(gameArea.score));
 
-    player.distances.bottom = Math.floor(Math.sqrt(Math.pow(myObstacles[0].x - player.x + player.size,2)));
-    player.distances.top = Math.floor(Math.sqrt(Math.pow(myObstacles[0].x - player.x + player.size,2) + Math.pow(myObstacles[0].y - 500,2)));
+    player.distances.bottom = Math.floor(Math.sqrt(Math.pow(myObstacles[0].x - (player.x + player.size),2)));
+    player.distances.top = Math.floor(Math.sqrt(Math.pow(myObstacles[0].x - (player.x + player.size),2) + Math.pow(myObstacles[0].y - 500,2)));
 
     //drawSensors();
 
