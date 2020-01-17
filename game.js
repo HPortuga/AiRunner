@@ -11,10 +11,15 @@ var myObstacles = [];
 var player = {
   x: 20,
   y: 470,
+  size: 30,
   speedY: 0,
+  distances: {
+    top: 0,
+    bottom: 0
+  },
   update: function() {
     gameArea.context.fillStyle = "black";
-    gameArea.context.fillRect(this.x, this.y, 30, 30);
+    gameArea.context.fillRect(this.x, this.y, this.size, this.size);
   },
   newPos: function() {
     if (this.y < 280)
@@ -62,10 +67,10 @@ var gameArea = {
         return;
       }
 
-      if (item.x < -player.x) {
+      if (item.x < -(player.x * 2))
         myObstacles.splice(index, 1);
-      }
     });
+
 
     gameArea.clear();
 
@@ -79,11 +84,21 @@ var gameArea = {
       item.x -= 1;
       item.draw();
     });
+
     player.newPos();
     player.update();
     gameArea.frame += 1;
     gameArea.score += 0.01;
     scoreText.update("Score: " + Math.floor(gameArea.score));
+
+    player.distances.bottom = myObstacles[0].x - (player.x + player.size);
+    if (player.distances.bottom < 0) {
+      player.distances.bottom = myObstacles[1].x - (player.x + player.size);
+    }
+
+    var span = document.getElementById("log");
+    span.innerText = player.distances.bottom;
+
   },
   clear: function() {
     gameArea.context.clearRect(0,0,this.canvas.width, this.canvas.height);
