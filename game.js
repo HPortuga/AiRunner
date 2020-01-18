@@ -9,7 +9,7 @@ var gap = randomGap();
 var myObstacles = [];
 
 var recordedData = [];
-recordedData.push("topDistance,bottomDistance,jump;\n");
+//recordedData.push("topDistance,bottomDistance,jump;\n");
 
 var player = {
   x: 20,
@@ -98,18 +98,17 @@ var gameArea = {
 
     //drawSensors();
 
-    recordedData.push(player.distances.top + "," + player.distances.bottom + "," + "no;\n");
-
+    recordedData.push([player.distances.top, player.distances.bottom, 0]);
   },
   clear: function() {
     gameArea.context.clearRect(0,0,this.canvas.width, this.canvas.height);
   },
   stop: function() {
-    let file = new Blob([recordedData.join("")], {type: "text/csv"});
-    let url = document.createElement("a");
-    url.href = URL.createObjectURL(file);
-    url.download = Math.floor(gameArea.score) + ".csv";
-    url.click();
+    // let file = new Blob([recordedData.join("")], {type: "text/csv"});
+    // let url = document.createElement("a");
+    // url.href = URL.createObjectURL(file);
+    // url.download = Math.floor(gameArea.score) + ".csv";
+    // url.click();
 
     clearInterval(this.interval);
   }
@@ -141,7 +140,7 @@ function randomGap() {
 
 function jump() {
   player.speedY = -2;
-  recordedData.push(player.distances.top + "," + player.distances.bottom + "," + "yes;\n");
+  recordedData.push([player.distances.top, player.distances.bottom, 1]);
 }
 
 function drawSensors() {
